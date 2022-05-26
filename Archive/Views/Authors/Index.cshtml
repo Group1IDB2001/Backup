@@ -1,0 +1,84 @@
+﻿@{
+    ViewData["Title"] = "List of Authors";
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if(ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+}
+<head>
+    <meta charset="utf-8">
+    <title>Авторы</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+     <link rel="stylesheet" href="~/css/tooplate-style.css"/> 
+     <link rel="stylesheet" href="~/css/autor-style.css"/> 
+</head>
+
+<h1>Наши Авторы</h1>
+<table class="table">
+    <tr>
+        <th>
+            Полное имя
+        </th>
+        <th>
+            Дата рождения
+        </th>
+        <th>
+            Дата смерти
+        </th>
+        <th class="text-center">
+            Немного о авторе
+        </th>
+
+    </tr>
+    @foreach(var author in Model)
+    {
+        <tr>
+            <td>@author.Name</td>
+            <td>@author.Born</td>
+            <td>@author.Death</td>
+            <td>@author.About</td>
+
+            <td class="aling-middle">
+            <a asp-area="" asp-controller="Authors" asp-action="Edit" asp-route-id=@author.Id class="btn btn-outline-primary"><i class="bi bi-pencil-square"></i>Edit</a>
+            <a asp-area="" asp-controller="Authors" asp-action="Details" asp-route-id=@author.Id class="btn btn-outline-info"><i class="bi bi-eye"></i>Details</a>
+            <a asp-area="" asp-controller="Authors" asp-action="Delete" asp-route-id=@author.Id class="btn btn-danger"><i class="bi bi-trash"></i>Delete</a>
+            </td>
+        </tr>
+        
+    }
+</table>
+
+
+
+<div class ="container">
+    @if(pager.TotalPages > 0)
+    {
+        <ul class ="pagination justify-content-end">
+      
+            @for (var pag = pager.StartPage; pag <= pager.EndPage; pag++)
+            {
+                <li class ="page-item @(pag == pager.CurrentPage ? "active":"")">
+                    <a class ="page-link" asp-controller="Authors" asp-action="Index" asp-route-pg="@pag"> @pag </a>
+                </li>
+            }
+            @if(pager.CurrentPage < pager.TotalPages)
+            {
+                <li class="page-item">
+                    <a class ="page-link" asp-controller="Authors" asp-action="Index" asp-route-pg="@(pager.CurrentPage+1)"> Next </a>
+                </li>
+                <li>
+                     <a class ="page-link" asp-controller="Authors" asp-action="Index" asp-route-pg=@(pager.CurrentPage -1)>Previous</a>
+                </li>
+            }
+            
+        </ul>
+    }
+   
+     <a asp-controller="Authors" asp-action="Create" class="btn btn-success" ><i class="bi bi-plus-circle"></i>Добавить нового автора</a>
+   
+
+</div>
+
