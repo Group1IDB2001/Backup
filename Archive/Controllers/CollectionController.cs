@@ -11,18 +11,18 @@ namespace Archive.Controllers
         {
             _manager = manager;
         }
+
         [HttpGet]
-        
         public async Task<IActionResult> CollectionsPage(int id)
         {
 
-            var col = _manager.GetCollectionsByUsreId(id);
+            var col = await _manager.GetCollectionsByUsreId(id);
             var data = col;
             return View(data);
         }
 
 
-        [HttpPut]
+        [HttpGet]
         [Route("collections")]
         public async Task AddCollection([FromBody] CreateCollectionRequest request) => await _manager.AddCollection(request.Name, request.Description, request.UserId);
 
